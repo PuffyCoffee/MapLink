@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Google Map</title>
+		<script type="text/javascript" 
+				src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+		<script type="text/javascript"
+				src="lib.js"></script>
+	</head>
+	<body>
+		<div id="map" style="width: 1100px; height: 400px; border: 1px solid blue;"></div>
+		<script type="text/javascript">
+		
+		var map;
+		function initialize() {
+			var xbox = false;
+			var mapDiv = document.getElementById("map");
+
+			//Must put onkeydown, onkeyup at the beginning of map initialize().
+			
+			// mapDiv.addEventListener("mouseover", function() {
+			// 	console.log("mouse entered.");
+			// 	xbox = true;
+			// }, false);
+			// mapDiv.addEventListener("mouseout", function() {
+			// 	console.log("mouse left.");
+			// 	xbox = false;
+			// }, false);
+			
+			// mapDiv.addEventListener("mousedown", function() {
+			// 	if (xbox) {
+			// 		console.log("down.");
+			// 	}
+			// }, false);
+			var mapOptions = {
+				zoom: 6,
+				center: new google.maps.LatLng(-34, 150),
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			map = new google.maps.Map(document.getElementById('map'), mapOptions);
+			var marker_1 = new google.maps.Marker({
+				position: new google.maps.LatLng(-31, 148),
+				map: map,
+				title: "marker_1"
+			});
+			var marker_2 = new google.maps.Marker({
+				position: new google.maps.LatLng(-35, 151),
+				map: map,
+				title: "marker_2"
+			});
+			var pos_1;
+			google.maps.event.addListener(marker_1, "click", function(event) {
+				if (xbox) {
+					pos_1 = marker_1.getPosition();
+				}
+		    });
+		    google.maps.event.addListener(marker_2, "click", function(event) {
+		    	if (xbox) {
+		    		var myTrip = [marker_1.getPosition(), marker_2.getPosition()];
+					var flightPath = new google.maps.Polyline({
+						path:myTrip,
+					  	strokeColor:"#0000FF",
+					  	strokeOpacity:0.9,
+					  	strokeWeight:3
+					});
+
+					flightPath.setMap(map);
+		    	}
+		    });
+		    
+		}
+		google.maps.event.addDomListener(window, 'load', initialize);
+
+		var lineCreator = new LineCreator();
+		//lineCreator.generateLink();
+		console.log(lineCreator.googleMap().nokiaMap().getMapType());
+
+
+		</script>
+	</body>
+</html>
+
+
+
+
