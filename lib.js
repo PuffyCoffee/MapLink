@@ -55,7 +55,7 @@
 			return path;
 		};
 
-		this.setPathFlag = function() {
+		this.setPathFlag = function(marker) {
 			for (var i = 0; i < 2; i += 1) {
 				if (path_flag[i]) {
 					path_flag[i] = false;
@@ -79,7 +79,10 @@
 				return "position 2 saved.";
 			}
 		};
-		this.link = function() {
+		this.stopAnimation = function(marker) {
+			marker.setAnimation(null);
+		};
+		this.link = function(marker) {
 			if (isShiftKeyPressed) {
 				if (this.mapType == "google") {
 					var myTrip = [
@@ -92,6 +95,7 @@
 					  	strokeOpacity: 0.9,
 					  	strokeWeight: 3          //Change strokeWeight here
 					});
+					marker.setAnimation(google.maps.Animation.DROP);
 					return line; //line.setMap(map)
 				} else if (this.mapType == "nokia") {
 					var line = new nokia.maps.map.Polyline([

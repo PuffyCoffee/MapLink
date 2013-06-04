@@ -38,19 +38,26 @@
 				lineCreator.setPathFlag();
 				//create path
 				try {
-					lineCreator.link().setMap(map);
+					lineCreator.link(this).setMap(map);
 				} catch (err) {
+					lineCreator.stopAnimation(this);
 					console.log("you need to hold shift to create a link.");
 				}
-				
 		    });
+		    // google.maps.event.addListener(marker_1, "mouseover", function(event) {
+		    	
+		    // });
+		    // google.maps.event.addListener(marker_1, "mouseout", function(event) {
+		    	
+		    // });
 		    google.maps.event.addListener(marker_2, "click", function(event) {
 				console.log(lineCreator.savePosition(marker_2.getPosition().lat(), marker_2.getPosition().lng()));
 				lineCreator.setPathFlag();
 				//create path
 				try {
-					lineCreator.link().setMap(map);
+					lineCreator.link(this).setMap(map);
 				} catch (err) {
+					lineCreator.stopAnimation(this);
 					console.log("you need to hold shift to create a link.");
 				}
 				
