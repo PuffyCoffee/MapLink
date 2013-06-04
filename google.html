@@ -32,18 +32,28 @@
 			var pos_1;
 			var lineCreator = new LineCreator();
 			lineCreator.googleMap();
-			console.log(lineCreator.getPathFlag());
+			console.log(lineCreator);
 			google.maps.event.addListener(marker_1, "click", function(event) {
 				console.log(lineCreator.savePosition(marker_1.getPosition().lat(), marker_1.getPosition().lng()));
 				lineCreator.setPathFlag();
 				//create path
-				lineCreator.link().setMap(map);
+				try {
+					lineCreator.link().setMap(map);
+				} catch (err) {
+					console.log("you need to hold shift to create a link.");
+				}
+				
 		    });
 		    google.maps.event.addListener(marker_2, "click", function(event) {
 				console.log(lineCreator.savePosition(marker_2.getPosition().lat(), marker_2.getPosition().lng()));
 				lineCreator.setPathFlag();
 				//create path
-				lineCreator.link().setMap(map);
+				try {
+					lineCreator.link().setMap(map);
+				} catch (err) {
+					console.log("you need to hold shift to create a link.");
+				}
+				
 		    });
 		}
 		google.maps.event.addDomListener(window, 'load', initialize);
