@@ -13,6 +13,7 @@
 		
 		var map;
 		function initialize() {
+			console.log(new LineCreator());
 			var mapOptions = {
 				zoom: 6,
 				center: new google.maps.LatLng(-34, 150),
@@ -32,8 +33,10 @@
 			var pos_1;
 			var lineCreator = new LineCreator();
 			lineCreator.googleMap();
-			console.log(lineCreator);
 			google.maps.event.addListener(marker_1, "click", function(event) {
+				console.log(lineCreator.getPath());
+				console.log(lineCreator.getPathFlag());
+				console.log(lineCreator.getMapType());
 				console.log(lineCreator.savePosition(marker_1.getPosition().lat(), marker_1.getPosition().lng()));
 				lineCreator.setPathFlag();
 				//create path

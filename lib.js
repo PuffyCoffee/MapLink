@@ -6,10 +6,12 @@
 
 	window.onkeydown = function(event) {
 		if (event.shiftKey) {
+			console.log("clicked shift");
 			isShiftKeyPressed = true;
 		}
 	};
 	window.onkeyup = function(event) {
+		console.log("released shift key");
 		isShiftKeyPressed = false;
 		//reset flag
 		path_flag = [true, true];
@@ -98,16 +100,21 @@
 					marker.setAnimation(google.maps.Animation.DROP);
 					return line; //line.setMap(map)
 				} else if (this.mapType == "nokia") {
-					var line = new nokia.maps.map.Polyline([
-						new nokia.maps.geo.Coordinate(path[0].lat, path[0].lng),
-						new nokia.maps.geo.Coordinate(path[1].lat, path[1].lng)
-					], {
-						pen: new nokia.maps.util.Pen({
-							lineWidth: 3,
-							strokeColor: "#4185F3"
-						})
-					});
-					return line; //map.objects.add(line);
+					// console.log("coord1: ", new nokia.maps.geo.Coordinate(path[0].lat, path[0].lng));
+					// console.log("coord2: ", new nokia.maps.geo.Coordinate(path[1].lat, path[1].lng));
+
+					if (typeof path[1].lat !== "undefined" && typeof path[1].lat !== "undefined") {
+						var line = new nokia.maps.map.Polyline([
+							new nokia.maps.geo.Coordinate(path[0].lat, path[0].lng),
+							new nokia.maps.geo.Coordinate(path[1].lat, path[1].lng)
+						], {
+							pen: new nokia.maps.util.Pen({
+								lineWidth: 3,
+								strokeColor: "#4185F3"
+							})
+						});
+						return line; //map.objects.add(line);
+					}
 				} else { //Support other map in the future
 
 				}

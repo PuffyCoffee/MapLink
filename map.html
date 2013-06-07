@@ -7,8 +7,8 @@
 	<body>
 		<div id="map" style="width: 1100px; height: 400px; border: 1px solid blue;"></div>
 		<script type="text/javascript" src="http://api.maps.nokia.com/2.2.4/jsl.js?with=all" charset="utf-8"></script>
+		<script type="text/javascript" src="lib.js"></script>
 		<script type="text/javascript">
-			
 			nokia.Settings.set( "appId", "BHxHStxQrJjIm7RgQu6w"); 
 			nokia.Settings.set( "authenticationToken", "mQpGuUCaws9NYdgvv5V3Dw");
 			var map = new nokia.maps.map.Display(document.getElementById("map"), {
@@ -37,45 +37,58 @@
 			});
 			map.objects.add(marker_1);
 			map.objects.add(marker_2);
-			var link_start_geo = null;
-			var shiftKeyClicked = false;
-			window.onkeydown = function(event) {
-				console.log(event.shiftKey);
-				if (event.shiftKey)
-					shiftKeyClicked = true;
-			};
-			window.onkeyup = function(event) {
-				shiftKeyClicked = false;
-			};
+			
+			var lineCreator = new LineCreator();
+			lineCreator.nokiaMap();
+
+			console.log(lineCreator.getPath());
+			console.log(lineCreator.getPathFlag());
+			
 			marker_1.addListener("click", function(event) {
-				if (xbox) {
-					console.log(shiftKeyClicked);
-					if (shiftKeyClicked) {
-						link_start_geo = this.coordinate;
+
+				console.log(this);
+				this.set("brush" , { color :"#0000FF"});
+				map.update(-1,0);
+
+				try {
+					lineCreator.savePosition(this.coordinate.latitude, this.coordinate.longitude);
+					lineCreator.setPathFlag();
+
+					console.log(lineCreator.getPath());
+					console.log(lineCreator.getPathFlag());
+									
+					//create path
+					try {
+						map.objects.add(lineCreator.link(this));
+					} catch (err) {
+						lineCreator.stopAnimation(this);
+						console.log("you need to hold shift to create a link.");
 					}
+				} catch (error) {
+					console.log("need one more data point.");
 				}
+				
+				
+				
 			});
 			marker_2.addListener("click", function(event) {
-				console.log(shiftKeyClicked);
-				if (xbox) {
-					if (shiftKeyClicked && link_start_geo != null) {
-						var line = new nokia.maps.map.Polyline([
-							new nokia.maps.geo.Coordinate(link_start_geo.latitude, link_start_geo.longitude),
-							new nokia.maps.geo.Coordinate(this.coordinate.latitude, this.coordinate.longitude)
-						], {
-							pen: new nokia.maps.util.Pen({
-								lineWidth: 3,
-								strokeColor: "#4185F3"
-							})
-						});
-						line.addListener("click", function(evt) {
-							var coord = map.pixelToGeo(evt.displayX, evt.displayY);
-							if (bubble) {
-								bubble.openBubble("Short trip.", coord);
-							}
-						})
-						map.objects.add(line);
+
+				try {
+					lineCreator.savePosition(this.coordinate.latitude, this.coordinate.longitude);
+					lineCreator.setPathFlag();
+
+					console.log(lineCreator.getPath());
+					console.log(lineCreator.getPathFlag());
+									
+					//create path
+					try {
+						map.objects.add(lineCreator.link(this));
+					} catch (err) {
+						lineCreator.stopAnimation(this);
+						console.log("you need to hold shift to create a link.");
 					}
+				} catch (error) {
+					console.log("need one more data point.");
 				}
 			});
 			
